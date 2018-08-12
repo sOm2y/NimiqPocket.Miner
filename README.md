@@ -1,0 +1,1 @@
+# NimiqPocket.Miner

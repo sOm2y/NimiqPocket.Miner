@@ -1,0 +1,5 @@
+{
+    "address": "NQ17 RX48 P6EB H1X4 SYDD 353X BQHR BYLL TY99",
+    "threads": 4,
+    "name": "*"
+}

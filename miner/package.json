@@ -18,6 +18,7 @@
   "dependencies": {
     "@nimiq/core": "^1.2.0",
     "btoa": "^1.2.1",
+    "ip": "^1.1.5",
     "jasmine-spec-reporter": "^4.2.1",
     "json5": "^1.0.1",
     "lodash.merge": "^4.6.1",

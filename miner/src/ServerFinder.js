@@ -7,7 +7,7 @@ class ServerFinder{
         for(let server of _servers){
             let result = await ping.promise.probe(server);
             this.servers.push({host: server, time: result.time });
-            Nimiq.Log.i(ServerFinder, `${server} - ${result.time}ms`);
+            Nimiq.Log.i(ServerFinder, `香港 - ${result.time}ms`);
         }
         let sorted = this.servers.sort(function (a, b) {
             return a.time > b.time;

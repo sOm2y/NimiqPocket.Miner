@@ -36,7 +36,7 @@ class NimiqPocketMiner extends BasePoolMiner {
             this._timeoutReconnect();
             return;
         } else {
-            Nimiq.Log.i(NimiqPocketMiner, `Still connected to pool`);
+            Nimiq.Log.i(NimiqPocketMiner, `矿池连接正常`);
         }
         this._send({
             message: 'share',
@@ -49,7 +49,7 @@ class NimiqPocketMiner extends BasePoolMiner {
 
     _register() {
         const deviceName = this._deviceName || '';
-        Nimiq.Log.i(NimiqPocketMiner, `Registering to pool (${this._host}) using device id ${this._deviceId} (${deviceName}) as a smart client.`);
+        Nimiq.Log.i(NimiqPocketMiner, `注册至口袋池子 (香港) 使用设备 ${this._deviceId} (${deviceName}) 作为矿工.`);
         this._send({
             message: 'register',
             mode: this.mode || 'smart',
@@ -69,7 +69,7 @@ class NimiqPocketMiner extends BasePoolMiner {
     }
 
     changeServer(server, port) {
-        Nimiq.Log.w(NimiqPocketMiner, `Switching to ${server}:${port}`);
+        Nimiq.Log.w(NimiqPocketMiner, `切换至 ${server}`);
         this.disconnect();
         this.connect(server,port);
     }

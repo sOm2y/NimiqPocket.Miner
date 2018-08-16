@@ -20,9 +20,9 @@ const $ = {};
 const defaultConfigFile = 'config.txt';
 
 const servers = [
-    'hk.nimiqpocket.com'
+    'hk1a.nimiqpocket.cn'
 ];
-const poolPort = 8444;
+const poolPort = 1023;
 
 Nimiq.Log.instance.level = 'info';
 
@@ -114,25 +114,25 @@ function humanHashes(bytes) {
     const closestServer = serversSorted[0];
     if(!config.server) {
         config.server = closestServer.host;
-        Nimiq.Log.i(TAG, `Closest server: ${config.server}`);
+        Nimiq.Log.i(TAG, `Closest server: 香港`);
     }
     config.poolMining.host = config.server;
 
     let deviceName = config.name || '*';
     if (deviceName === '*') {
         deviceName = [ip.address(), os.platform(), os.arch(), os.release()].join(' ');
-        Nimiq.Log.i(`auto set name to ${deviceName}`)
+        Nimiq.Log.i(`自动设置矿机名称为 ${deviceName}`)
     }
-    Nimiq.Log.i(TAG, `Nimiqpocket Miner ${pjson.version} starting`);
-    Nimiq.Log.i(TAG, `- network          = ${config.network}`);
-    Nimiq.Log.i(TAG, `- no. of threads   = ${config.miner.threads}`);
-    Nimiq.Log.i(TAG, `- pool server      = ${config.poolMining.host}:${config.poolMining.port}`);
-    Nimiq.Log.i(TAG, `- address          = ${config.address}`);
-    Nimiq.Log.i(TAG, `- device name      = ${deviceName}`);
-    Nimiq.Log.i(TAG, `Please wait while we establish consensus.`);
+    Nimiq.Log.i(TAG, `口袋矿工 ${pjson.version} 开始启动`);
+    // Nimiq.Log.i(TAG, `- 网络          = ${config.network}`);
+    Nimiq.Log.i(TAG, `- 线程数   = ${config.miner.threads}`);
+    // Nimiq.Log.i(TAG, `- pool server      = ${config.poolMining.host}`);
+    Nimiq.Log.i(TAG, `- 钱包地址 = ${config.address}`);
+    Nimiq.Log.i(TAG, `- 矿机名称 = ${deviceName}`);
+    Nimiq.Log.i(TAG, `请等待共识建立.`);
 
     Nimiq.GenesisConfig.init(Nimiq.GenesisConfig.CONFIGS[config.network]);
-    Nimiq.GenesisConfig.SEED_PEERS.push(Nimiq.WssPeerAddress.seed('hk.nimiqpocket.com', 8448));
+    Nimiq.GenesisConfig.SEED_PEERS.push(Nimiq.WssPeerAddress.seed('jp.nimiqpocket.com', 8448));
     const networkConfig = new Nimiq.DumbNetworkConfig();
     $.consensus = await Nimiq.Consensus.light(networkConfig);
     $.blockchain = $.consensus.blockchain;
@@ -156,9 +156,9 @@ function humanHashes(bytes) {
     }
 
     const account = await $.accounts.get($.wallet.address);
-    Nimiq.Log.i(TAG, `Wallet initialized for address ${$.wallet.address.toUserFriendlyAddress()}.`
-        + ` Balance: ${Nimiq.Policy.satoshisToCoins(account.balance)} NIM`);
-    Nimiq.Log.i(TAG, `Blockchain state: height=${$.blockchain.height}, headHash=${$.blockchain.headHash}`);
+    Nimiq.Log.i(TAG, `钱包初始化成功 ${$.wallet.address.toUserFriendlyAddress()}.`
+        + ` 钱包金额: ${Nimiq.Policy.satoshisToCoins(account.balance)} NIM`);
+    Nimiq.Log.i(TAG, `区块链状态: 高度=${$.blockchain.height}, headHash=${$.blockchain.headHash}`);
 
     // connect to pool
     const deviceId = Nimiq.BasePoolMiner.generateDeviceId(networkConfig);
@@ -166,7 +166,7 @@ function humanHashes(bytes) {
     $.miner = new NimiqPocketMiner('smart', $.blockchain, $.accounts, $.mempool, $.network.time, $.wallet.address, deviceId, deviceName, startDifficulty);
 
     $.consensus.on('established', () => {
-        Nimiq.Log.i(TAG, `Connecting to pool ${config.poolMining.host} using device id ${deviceId} as a smart client.`);
+        Nimiq.Log.i(TAG, `已连接至口袋矿池 香港节点 使用 ${deviceName}  作为矿机.`);
         $.miner.connect(config.poolMining.host, config.poolMining.port);
     });
 
@@ -177,7 +177,7 @@ function humanHashes(bytes) {
         }
         let nextServer = serversSorted[nextServerIndex];
         if(nextServer) {
-            Nimiq.Log.w(TAG, `Lost connection with ${config.poolMining.host}, switching to ${nextServer.host}`);
+            Nimiq.Log.w(TAG, `失去矿池连接 ${config.poolMining.host}, 切换至 ${nextServer.host}`);
             config.poolMining.host = nextServer.host;
             $.miner.changeServer(config.poolMining.host, config.poolMining.port);
             currentServerIndex = nextServerIndex;
@@ -186,7 +186,7 @@ function humanHashes(bytes) {
 
     $.blockchain.on('head-changed', (head) => {
         if ($.consensus.established || head.height % 100 === 0) {
-            Nimiq.Log.i(TAG, `Now at block: ${head.height}`);
+            Nimiq.Log.i(TAG, `当前区块高度: ${head.height}`);
         }
     });
 
@@ -206,12 +206,12 @@ function humanHashes(bytes) {
     }
 
     $.consensus.on('established', () => {
-        Nimiq.Log.i(TAG, `Blockchain consensus established in ${(Date.now() - START) / 1000}s.`);
-        Nimiq.Log.i(TAG, `Current state: height=${$.blockchain.height}, totalWork=${$.blockchain.totalWork}, headHash=${$.blockchain.headHash}`);
+        Nimiq.Log.i(TAG, `区块链共识建立完成，用时 ${(Date.now() - START) / 1000}s.`);
+        Nimiq.Log.i(TAG, `当前状态: 高度=${$.blockchain.height}, totalWork=${$.blockchain.totalWork}, headHash=${$.blockchain.headHash}`);
     });
 
     $.miner.on('block-mined', (block) => {
-        Nimiq.Log.i(TAG, `Block mined: #${block.header.height}, hash=${block.header.hash()}`);
+        Nimiq.Log.i(TAG, `挖到区块: #${block.header.height}, hash=${block.header.hash()}`);
     });
 
     
@@ -225,7 +225,7 @@ function humanHashes(bytes) {
             const account = await $.accounts.get($.wallet.address);
             const sum = hashrates.reduce((acc, val) => acc + val, 0);
             Nimiq.Log.i(TAG, `Hashrate: ${humanHashes((sum / hashrates.length).toFixed(2).padStart(7))}`
-                + ` - Balance: ${Nimiq.Policy.satoshisToCoins(account.balance)} NIM`
+                + ` - 钱包金额: ${Nimiq.Policy.satoshisToCoins(account.balance)} NIM`
                 + ` - Mempool: ${$.mempool.getTransactions().length} tx`);
             hashrates.length = 0;
         }

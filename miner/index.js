@@ -20,7 +20,7 @@ const $ = {};
 const defaultConfigFile = 'config.txt';
 
 const servers = [
-    'hk.nimiqpocket.com'
+    'us.nimiqpocket.com'
 ];
 const poolPort = 8444;
 
@@ -132,7 +132,7 @@ function humanHashes(bytes) {
     Nimiq.Log.i(TAG, `Please wait while we establish consensus.`);
 
     Nimiq.GenesisConfig.init(Nimiq.GenesisConfig.CONFIGS[config.network]);
-    Nimiq.GenesisConfig.SEED_PEERS.push(Nimiq.WssPeerAddress.seed('hk.nimiqpocket.com', 8448));
+    Nimiq.GenesisConfig.SEED_PEERS.push(Nimiq.WssPeerAddress.seed('jp.nimiqpocket.com', 8448));
     const networkConfig = new Nimiq.DumbNetworkConfig();
     $.consensus = await Nimiq.Consensus.light(networkConfig);
     $.blockchain = $.consensus.blockchain;

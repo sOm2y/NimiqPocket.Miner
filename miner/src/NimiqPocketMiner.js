@@ -61,6 +61,14 @@ class NimiqPocketMiner extends BasePoolMiner {
         });
     }
 
+    _onError(ws, e) {
+        console.error(e)
+        if (ws === this._ws) {
+            this._changeConnectionState(BasePoolMiner.ConnectionState.CLOSED);
+            this.fire('pool-disconnected');
+        }
+    }
+
     _onClose(ws, e) {
         if (ws === this._ws) {
             this._changeConnectionState(BasePoolMiner.ConnectionState.CLOSED);

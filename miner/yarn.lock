@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@nimiq/core@^1.2.0":
+"@nimiq/core@git://github.com/nimiq-network/core.git#cd6f40d4a46e63cc6a4ab7fc37827ed7b6a2fe0e":
   version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@nimiq/core/-/core-1.2.0.tgz#93bc46b662d68f03467a6931c36febb76ff2f797"
+  resolved "git://github.com/nimiq-network/core.git#cd6f40d4a46e63cc6a4ab7fc37827ed7b6a2fe0e"
   dependencies:
     "@nimiq/jungle-db" "^0.9.14"
     atob "^2.0.3"
